@@ -1,5 +1,9 @@
 import streamlit as st
 
+from src.home_screen import home_screen
+from src.student_screen import student_screen
+from src.teacher_screen import teacher_screen
+
 def main():
     if 'login_type' not in st.session_state:
         st.session_state['login_type']=None
