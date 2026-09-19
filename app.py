@@ -1,12 +1,15 @@
 import streamlit as st
 
 def main():
-    name=st.text_input("enter the name")
-    st.header("TItle")
-    if st.button('displaly the nane' ,type="primary", key='btn1'):
-        print('hii ', name)
-    st.button('display ', type='secondary',key='btn2')
-    st.markdown("""
-        <h1>dfld</h1>
-    """,unsafe_allow_html=True)
+    if 'login_type' not in st.session_state:
+        st.session_state['login_type']=None
+
+    match st.session_state['login_type']:
+        case 'teacher':
+            teacher_screen()
+        case 'student':
+            student_screen()
+        case None:
+            home_screen()
+
 main()
