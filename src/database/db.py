@@ -5,7 +5,7 @@ def hash_pass(password):
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 def check_pass(password,hashedpass):
-    return bcrypt.checkpw(password.encode(),hashedpass.code())
+    return bcrypt.checkpw(password.encode(),hashedpass.encode())
 
 def check_teacher_exists(username):
     response=supabase.table("teachers").select("username").eq("username",username).execute()
