@@ -5,7 +5,7 @@ def style_background_home():
     st.markdown("""
         <style>
                 .stApp {
-                    background: #5865F2 !important;
+                    background: aqua !important;
                 }
                 .stApp div[data-testid="stColumn"]{
                     background-color:#E0E3FF !important;
