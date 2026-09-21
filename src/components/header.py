@@ -1,7 +1,4 @@
-
-
 import streamlit as st
-
 
 def header_home():
 

@@ -42,9 +42,9 @@ def style_base_layout():
             }
             */
                 
-            .block-container {
+         /*   .block-container {
                 padding-top:1.5rem !important;    
-            }
+            } */
 
             h1 {
                 font-family: 'Climate Crisis', sans-serif !important;
