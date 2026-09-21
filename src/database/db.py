@@ -1,6 +1,9 @@
 from src.database.config import supabase
 import bcrypt
 
+def hash_pass(password):
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
 def check_teacher_exists(username):
     response=supabase.table("teacher").select("username").eq("username",username).execute()
     return len(response.data)>0
