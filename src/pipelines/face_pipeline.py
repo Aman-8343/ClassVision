@@ -16,3 +16,37 @@ def load_dlib_models():
     facerec=dlib.face_recognition_model_v1(face_recognition_models.face_recognition_model_location())
 
     return detector,sp,facerec
+
+def get_face_embeddings(image_np):
+    detector,sp,facerec=load_dlib_models()
+    faces=detector(image_np,1)
+    encodings=[]
+
+    for face in faces:
+        shape=sp(image_np,face)   ##landmarks
+        face_descriptor=facerec.compute_face_descriptor(image_np,shape,1)  #128d embedding
+        encodings.append(np.array(face_descriptor))
+    return encodings
+
+
+@st.cache_resource
+def get_trained_model():
+    X=[]    #embeddings
+    y=[]    #student ids
+    student_db=get_all_students()
+    if not student_db:
+        return None
+    for student in student_db:
+        embedding=student.get('face_embedding')
+        if embedding:
+            X.append(embedding)
+            y.append(student.get('student_id'))
+
+    if len(X)==0:
+        return None
+
+    clf=SVC(kernel='linear',probability=True,class_weight='balanced')
+    try:
+        clf.fit(X,y)
+    except ValueError:
+        pass
