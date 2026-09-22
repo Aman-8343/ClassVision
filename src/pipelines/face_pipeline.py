@@ -23,7 +23,7 @@ def get_face_embeddings(image_np):
     encodings=[]
 
     for face in faces:
-        shape=sp(image_np,face)   ##landmarks
+        shape=sp(image_np,face)   ## 68 landmarks points
         face_descriptor=facerec.compute_face_descriptor(image_np,shape,1)  #128d embedding
         encodings.append(np.array(face_descriptor))
     return encodings
