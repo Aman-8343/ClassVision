@@ -1,6 +1,7 @@
 from src.database.config import supabase
 import bcrypt
 
+# Teacher
 def hash_pass(password):
     return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
@@ -26,7 +27,7 @@ def teacher_login(username,password):
 
 
 
-
+#Student
 def get_all_students():
     response=supabase.table("students").select('*').execute()
     return response.data
@@ -34,4 +35,17 @@ def get_all_students():
 def create_student(new_name,face_embedding=None,voice_embedding=None):
     data={'name': new_name, 'face_embedding': face_embedding, 'voice_embedding': voice_embedding}
     response=supabase.table("students").insert(data).execute()
+    return response.data
+
+
+
+#Subject
+def create_subject(sub_code, sub_name, sub_section, teacher_id):
+    data={
+        'subject_code': sub_code,
+        'name':sub_name,
+        'section': sub_section,
+        'teacher_id': teacher_id
+    }
+    response=supabase.table('subjects').insert(data).execute()
     return response.data
