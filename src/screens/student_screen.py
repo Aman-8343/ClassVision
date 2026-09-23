@@ -5,13 +5,21 @@ from src.components.header import header_dashboard
 from src.components.footer import footer_dashboard
 from PIL import Image
 import numpy as np
+import time
 
 from src.pipelines.face_pipeline import predict_attendance
 from src.database.db import get_all_students
 
+def student_dashboard():
+    st.header('ding ding ding..')
+
 def student_screen():
     style_background_dashboard()
     style_base_layout()
+
+    if "student_data" in st.session_state:
+        student_dashboard()
+        return 
 
     c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
     with c1:
