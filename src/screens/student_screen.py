@@ -33,6 +33,7 @@ def student_screen():
     st.space()
     st.space()
 
+    show_registration=False
     photo_source=st.camera_input("Position your face in the center")
     if photo_source:
         img=np.array(Image.open(photo_source))
@@ -57,7 +58,12 @@ def student_screen():
                         time.sleep(1)
                         st.rerun()
                 else:
-                    continue
+                    st.info("Face not recognized , You might be a new student")
+                    show_registration=True
+
+    if show_registration:
+                    
+
 
 
     footer_dashboard()
