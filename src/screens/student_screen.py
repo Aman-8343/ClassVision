@@ -39,7 +39,7 @@ def student_screen():
     if photo_source:
         img=np.array(Image.open(photo_source))
         with st.spinner("Scanning Image..."):
-            detected,all_ids,num_faces=predict_attendance()
+            detected,all_ids,num_faces=predict_attendance(img)
 
             if num_faces==0:
                 st.warning('NO Face Found')
