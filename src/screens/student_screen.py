@@ -7,6 +7,8 @@ from PIL import Image
 import numpy as np
 
 from src.pipelines.face_pipeline import predict_attendance
+from src.database.db import get_all_students
+
 def student_screen():
     style_background_dashboard()
     style_base_layout()
@@ -28,6 +30,22 @@ def student_screen():
         img=np.array(Image.open(photo_source))
         with st.spinner("Scanning Image..."):
             detected,all_ids,num_faces=predict_attendance()
+
+            if num_faces==0:
+                st.warning('NO Face Found')
+            elif num_faces>1:
+                st.warning("Multiple face Found")
+            else:
+                if detected:
+                    student_id=list(detected.keys())[0]
+                    all_students=get_all_students()
+                    student=next((s for s in all_students if s['student_id']==student_id), None)
+
+                    if student:
+                        st.session_state.is_logged_in=True
+                        st.session_state.user_role='student'
+                else:
+                    continue
 
 
     footer_dashboard()
