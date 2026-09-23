@@ -7,6 +7,7 @@ from src.database.db import check_teacher_exists, create_teacher, teacher_login,
 from src.database.config import supabase
 
 from src.components.dialog_create_subject import create_subject_dialog
+from src.components.subject_card import subject_card
 
 def teacher_screen():
 
