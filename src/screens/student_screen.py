@@ -6,6 +6,7 @@ from src.components.footer import footer_dashboard
 from PIL import Image
 import numpy as np
 
+from src.pipelines.face_pipeline import predict_attendance
 def student_screen():
     style_background_dashboard()
     style_base_layout()
@@ -24,5 +25,9 @@ def student_screen():
 
     photo_source=st.camera_input("Position your face in the center")
     if photo_source:
-        np.array(Image.open(photo_source))
+        img=np.array(Image.open(photo_source))
+        with st.spinner("Scanning Image..."):
+            detected,all_ids,num_faces=predict_attendance()
+
+
     footer_dashboard()
