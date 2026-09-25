@@ -14,6 +14,8 @@ from src.pipelines.face_pipeline import predict_attendance
 import numpy as np
 from src.database.config import supabase
 from datetime import datetime
+import pandas as pd
+from src.components.dialog_attendance_results import attendance_result_dialog
 
 
 def teacher_screen():
@@ -162,6 +164,14 @@ def teacher_tab_take_attendance():
                             "Status": "✅ Present" if is_present else "❌ Absent"
                         })
 
+                        attendance_to_log.append({
+                            'student_id': student['student_id'],
+                            'subject_id': selected_subject_id,
+                            'timestamp': current_timestamp,
+                            'is_present': bool(is_present)
+                        })
+
+                attendance_result_dialog(pd.DataFrame(results), attendance_to_log)
 
 
 
