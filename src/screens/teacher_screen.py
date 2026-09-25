@@ -10,6 +10,10 @@ from src.components.dialog_create_subject import create_subject_dialog
 from src.components.subject_card import subject_card
 from src.components.dialog_share_subject import share_subject_dialog
 from src.components.dialog_add_photo import add_photos_dialog
+from src.pipelines.face_pipeline import predict_attendance
+import numpy as np
+from src.database.config import supabase
+import datetime
 
 
 def teacher_screen():
@@ -135,7 +139,19 @@ def teacher_tab_take_attendance():
 
                             all_detected_ids.setdefault(student_id, []).append(f"Photo {idx+1}")
 
+                enrolled_res = supabase.table('subject_students').select("*, students(*)").eq('subject_id',selected_subject_id ).execute()
+                enrolled_students = enrolled_res.data
 
+                if not enrolled_students:
+                    st.warning('No students enrolled in this course')
+                else:
+
+                    results, attendance_to_log  = [], []
+
+                    current_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+
+                    
 
 def teacher_tab_manage_subjects():
     teacher_id = st.session_state.teacher_data['teacher_id']
