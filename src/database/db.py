@@ -71,7 +71,6 @@ def get_teacher_subjects(teacher_id):
 
 # suject- student
 def enroll_student_to_subject(student_id,subject_id):
-    data={student_id: student_id, subject_id:subject_id}
-    response=supabase.table('subject_students').insert(data)
-
-    pass
+    data={"student_id": student_id, 'subject_id':subject_id}
+    response=supabase.table('subject_students').insert(data).execute()
+    return response.data
