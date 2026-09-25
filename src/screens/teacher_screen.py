@@ -118,6 +118,23 @@ def teacher_tab_take_attendance():
             st.session_state.attendance_images = []
             st.rerun()
 
+    with c2:
+        
+        if st.button('Run Face Analysis', width='stretch', type='secondary', icon=':material/analytics:', disabled=not has_photos):
+            with st.spinner('Deep scanning classroom photos...'):
+                all_detected_ids = {}
+
+                for idx, img in enumerate(st.session_state.attendance_images):
+                    img_np = np.array(img.convert('RGB'))
+                    detected, _, _ = predict_attendance(img_np)
+
+
+                    if detected:
+                        for sid in detected.keys():
+                            student_id = int(sid)
+
+                            all_detected_ids.setdefault(student_id, []).append(f"Photo {idx+1}")
+
 
 
 def teacher_tab_manage_subjects():
