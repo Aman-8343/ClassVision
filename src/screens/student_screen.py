@@ -34,6 +34,10 @@ def student_dashboard():
         if st.button('Enroll in Subject', type='primary', width='stretch'):
             enroll_dialog()
 
+    with st.spinner('Loading your enrolled subjects..'):
+        subjects = get_student_subjects(student_id)
+        logs = get_student_attendance(student_id)
+
 def student_screen():
     style_background_dashboard()
     style_base_layout()
