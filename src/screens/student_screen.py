@@ -12,7 +12,17 @@ from src.pipelines.voice_pipeline import get_voice_embedding
 from src.database.db import get_all_students, create_student
 
 def student_dashboard():
-    st.header('ding ding ding..')
+    student_data = st.session_state.student_data
+    student_id = student_data['student_id']
+    c1, c2 = st.columns(2, vertical_alignment='center', gap='xxlarge')
+    with c1:
+        header_dashboard()
+    with c2:
+        st.subheader(f"""Welcome, {student_data['name']} """)
+        if st.button("Logout", type='secondary', key='loginbackbtn', shortcut="control+backspace"):
+            st.session_state['is_logged_in'] = False
+            del st.session_state.student_data 
+            st.rerun()
 
 def student_screen():
     style_background_dashboard()
