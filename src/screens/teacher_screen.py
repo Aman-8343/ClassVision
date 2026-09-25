@@ -13,7 +13,7 @@ from src.components.dialog_add_photo import add_photos_dialog
 from src.pipelines.face_pipeline import predict_attendance
 import numpy as np
 from src.database.config import supabase
-import datetime
+from datetime import datetime
 
 
 def teacher_screen():
@@ -150,8 +150,20 @@ def teacher_tab_take_attendance():
 
                     current_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
 
+                    for node in enrolled_students:
+                        student = node['students']
+                        sources = all_detected_ids.get(int(student['student_id']), [])
+                        is_present= len(sources) > 0
 
-                    
+                        results.append({
+                            "Name": student['name'],
+                            "ID": student['student_id'],
+                            "Source": ", ".join(sources) if is_present else "-",
+                            "Status": "✅ Present" if is_present else "❌ Absent"
+                        })
+
+
+
 
 def teacher_tab_manage_subjects():
     teacher_id = st.session_state.teacher_data['teacher_id']
