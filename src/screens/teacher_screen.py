@@ -101,6 +101,25 @@ def teacher_tab_take_attendance():
 
     selected_subject_id = subject_options[selected_subject_label]
 
+    st.divider()
+
+    if st.session_state.attendance_images:
+        st.header('Added Photos')
+        gallery_cols = st.columns(4)
+
+        for idx, img in enumerate(st.session_state.attendance_images):
+            with gallery_cols[idx % 4 ]:
+                st.image(img, width='stretch', caption=f'Photo {idx+1}')
+    has_photos = bool(st.session_state.attendance_images)
+    c1, c2, c3 = st.columns(3)
+
+    with c1:
+        if st.button('Clear all photos', width='stretch', type='tertiary', icon=':material/delete:', disabled=not has_photos):
+            st.session_state.attendance_images = []
+            st.rerun()
+
+
+
 def teacher_tab_manage_subjects():
     teacher_id = st.session_state.teacher_data['teacher_id']
     col1, col2 = st.columns(2)
