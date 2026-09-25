@@ -24,6 +24,15 @@ def student_dashboard():
             del st.session_state.student_data 
             st.rerun()
 
+    st.space()
+
+    c1, c2 =st.columns(2)
+    with c1:
+        st.header('Your Enrolled Subjects')
+    with c2:
+        if st.button('Enroll in Subject', type='primary', width='stretch'):
+            enroll_dialog()
+
 def student_screen():
     style_background_dashboard()
     style_base_layout()
