@@ -2,6 +2,8 @@ import streamlit as st
 from src.pipelines.voice_pipeline import process_bulk_audio
 from src.database.config import supabase
 import pandas as pd
+from datetime import datetime
+from src.components.dialog_attendance_results import show_attendance_result
 
 def voice_attendance_dialog(selected_subject_id):
     st.write('Record audio of students saying I am present. Then AI will recognize the students')
@@ -25,3 +27,21 @@ def voice_attendance_dialog(selected_subject_id):
             if not candidates_dict:
                 st.error('No enrolled students have voice profiles registerd')
                 return
+
+            audio_bytes = audio_data.read()
+            detected_scores = process_bulk_audio(audio_bytes, candidates_dict)
+            results, attendance_to_log  = [], []
+            current_timestamp = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+
+            for node in enrolled_students:
+                student = node['students']
+                score  = detected_scores.get(student['student_id'], 0.0)
+                is_present= bool(score>0)
+
+                results.append({
+                    "Name": student['name'],
+                    "ID": student['student_id'],
+                    "Source": score if is_present else "-",
+                    "Status": "✅ Present" if is_present else "❌ Absent"
+                })
