@@ -216,7 +216,7 @@ def teacher_tab_attendance_records():
     st.header('Attendance Records')
 
     teacher_id = st.session_state.teacher_data['teacher_id']
-
+    
     records = get_attendance_for_teacher(teacher_id)
 
     if not records:

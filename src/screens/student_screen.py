@@ -98,12 +98,37 @@ def student_screen():
 
     st.header('Login using FaceID', text_alignment='center')
     st.space()
-    st.space()
 
     show_registration=False
-    photo_source=st.camera_input("Position your face in the center")
-    if photo_source:
-        img=np.array(Image.open(photo_source))
+
+    if 'photo_login' not in st.session_state:
+        st.session_state.photo_login = 'camera'
+
+    t1, t2 = st.columns(2)
+
+    with t1:
+        type_camera = "primary" if st.session_state.photo_login == 'camera' else 'tertiary'
+        if st.button('Camera', type=type_camera, width='stretch'):
+            st.session_state.photo_login = 'camera'
+
+    with t2:
+        type_upload = "primary" if st.session_state.photo_login == 'upload' else 'tertiary'
+        if st.button('Upload photos', type=type_upload, width='stretch'):
+            st.session_state.photo_login = 'upload'
+
+    camera_source = None
+    uploaded_files = None
+
+    if st.session_state.photo_login == 'camera':
+        camera_source=st.camera_input("Position your face in the center")
+    if st.session_state.photo_login == 'upload':
+        uploaded_files = st.file_uploader( 'choose image files', type=['jpg', 'png', 'jpeg' ], accept_multiple_files=False, key='dialog_upload')
+    if camera_source or uploaded_files:
+        if camera_source:
+            img=np.array(Image.open(camera_source))
+        elif uploaded_files:
+            img=np.array(Image.open(uploaded_files))
+
         with st.spinner("Scanning Image..."):
             detected,all_ids,num_faces=predict_attendance(img)
 
@@ -138,13 +163,19 @@ def student_screen():
 
             audio_data = None
             try:
-                audio_data = st.audio_input('Record a short phrase like I am present, My name is Akash.')
+                audio_data = st.audio_input('Record a short phrase like I am present, My name is Aman.')
             except Exception:
                 st.error('Audio Data failed!')
 
             if st.button('Create Account', type='primary'):
                 if new_name:
                     with st.spinner('Creating profile..'):
+                        photo_source = None
+                        if st.session_state.photo_login == 'camera':
+                            photo_source = camera_source
+                        elif st.session_state.photo_login == 'upload':
+                            photo_source = uploaded_files
+
                         img = np.array(Image.open(photo_source))
                         encodings= get_face_embeddings(img)
                         if encodings:
