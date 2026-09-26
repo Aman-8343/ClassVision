@@ -234,6 +234,18 @@ def teacher_tab_attendance_records():
             "Subject Code":r['subjects']['subject_code'],
             "is_present": bool(r.get('is_present', False))
         })
+
+    df = pd.DataFrame(data)
+
+    summary = (
+        df.groupby(['ts_group', 'Time', 'Subject', 'Subject Code'])
+        .agg(
+            Present_Count = ('is_present', 'sum'),
+            Total_Count =('is_present', 'count')
+        ).reset_index()
+    )
+    
+
     
 
 
