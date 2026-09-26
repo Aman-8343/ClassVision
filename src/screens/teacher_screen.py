@@ -244,7 +244,17 @@ def teacher_tab_attendance_records():
             Total_Count =('is_present', 'count')
         ).reset_index()
     )
+
+    summary['Attendance Stats'] = (
+        "✅ " + summary['Present_Count'].astype(str) + " /"
+        + summary['Total_Count'].astype(str) + ' Students'
+    )
+
+    display_df = ( summary.sort_values(by='ts_group' ,ascending=False)
+                  [['Time', 'Subject', 'Subject Code', 'Attendance Stats']]
+                  )
     
+    st.dataframe(display_df, width='stretch', hide_index=True)
 
     
 
