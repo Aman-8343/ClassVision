@@ -26,4 +26,7 @@ def home_screen():
             st.session_state['login_type']='teacher'
             st.rerun()
 
+
+    st.divider()
+    st.divider()
     footer_home()
