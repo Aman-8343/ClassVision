@@ -5,6 +5,7 @@ import pandas as pd
 from datetime import datetime
 from src.components.dialog_attendance_results import show_attendance_result
 
+@st.dialog('Voice Attendance')
 def voice_attendance_dialog(selected_subject_id):
     st.write('Record audio of students saying I am present. Then AI will recognize the students')
 
