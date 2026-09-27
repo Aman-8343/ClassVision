@@ -28,5 +28,4 @@ def home_screen():
 
 
     st.divider()
-    st.divider()
     footer_home()
